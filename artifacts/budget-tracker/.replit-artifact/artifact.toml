@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Personal Budget Tracker"
+description = "A personal finance dashboard for recording income and expenses, setting monthly budgets, reviewing spending patterns, and exporting transaction data. It persists data locally in the browser and works without an account."
+version = "1.0.0"
+id = "artifacts/budget-tracker"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18541
+
+[services.development]
+run = "pnpm --filter @workspace/budget-tracker run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/budget-tracker", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/budget-tracker/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18541"
+BASE_PATH = "/"
